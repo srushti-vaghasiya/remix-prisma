@@ -5,8 +5,11 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "react-router";
-
+import { Toaster } from "react-hot-toast";
+import { Navbar } from "~/components/Navbar";
+import { getUser } from "~/utils/auth.server";
 import type { Route } from "./+types/root";
 import "./app.css";
 
@@ -23,6 +26,11 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+export async function loader({ request }: Route.LoaderArgs) {
+  const user = await getUser(request);
+  return { user };
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -32,17 +40,48 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="font-sans antialiased">
         {children}
         <ScrollRestoration />
         <Scripts />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#363636',
+              color: '#fff',
+            },
+            success: {
+              duration: 3000,
+              iconTheme: {
+                primary: '#10b981',
+                secondary: '#fff',
+              },
+            },
+            error: {
+              duration: 5000,
+              iconTheme: {
+                primary: '#ef4444',
+                secondary: '#fff',
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );
 }
 
 export default function App() {
-  return <Outlet />;
+  const { user } = useLoaderData<typeof loader>();
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navbar user={user} />
+      <Outlet />
+    </div>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -62,14 +101,21 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
+    <div className="min-h-screen bg-gray-50">
+      <Navbar user={null} />
+      <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h1 className="text-6xl font-bold text-gray-900 mb-4">{message}</h1>
+          <p className="text-xl text-gray-600 mb-8">{details}</p>
+          {stack && (
+            <div className="text-left">
+              <pre className="w-full p-4 bg-gray-100 rounded-lg overflow-x-auto text-sm">
+                <code>{stack}</code>
+              </pre>
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
   );
 }
