@@ -1,8 +1,8 @@
 import { useLoaderData, Link } from 'react-router';
+import { User, Shield, Calendar } from 'lucide-react';
 import { requireUser } from '~/utils/auth.server';
-import { Card, CardHeader, CardTitle, CardDescription } from '~/components/ui/Card';
 import { Button } from '~/components/ui/Button';
-import { User, Mail, Calendar, Shield } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardDescription } from '~/components/ui/Card';
 import type { LoaderFunctionArgs } from 'react-router';
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -40,11 +40,50 @@ export default function Dashboard() {
                 </div>
               </div>
             </CardHeader>
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-900">Name</p>
-              <p className="text-sm text-gray-600">{user.name || 'Not provided'}</p>
-              <p className="text-sm font-medium text-gray-900 mt-3">Email</p>
-              <p className="text-sm text-gray-600">{user.email}</p>
+            <div className="space-y-4">
+              {/* Profile Image */}
+              <div className="flex items-center space-x-4">
+                <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-200 border-2 border-gray-300">
+                  {(user as any).profileImage ? (
+                    <img
+                      src={(user as any).profileImage}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <User className="w-6 h-6 text-gray-400" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Profile Picture</p>
+                  <p className="text-xs text-gray-500">
+                    {(user as any).profileImage ? 'Custom image set' : 'Default avatar'}
+                  </p>
+                </div>
+              </div>
+
+              {/* User Info */}
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-900">Name</p>
+                <p className="text-sm text-gray-600">{user.name || 'Not provided'}</p>
+                <p className="text-sm font-medium text-gray-900 mt-3">Email</p>
+                <p className="text-sm text-gray-600">{user.email}</p>
+              </div>
+
+              {/* Edit Profile Button */}
+              <div className="pt-2">
+                <Link to="/profile">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    icon={<User size={16} />}
+                  >
+                    Edit Profile
+                  </Button>
+                </Link>
+              </div>
             </div>
           </Card>
 

@@ -40,8 +40,18 @@ export const Navbar: React.FC<NavbarProps> = ({ user }) => {
             {user ? (
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <User size={16} className="text-gray-600" />
+                  <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-300 border-2 border-gray-200">
+                    {(user as any).profileImage ? (
+                      <img
+                        src={(user as any).profileImage}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <User size={16} className="text-gray-600" />
+                      </div>
+                    )}
                   </div>
                   <div className="hidden sm:block">
                     <p className="text-sm font-medium text-gray-900">
@@ -97,8 +107,18 @@ export const Navbar: React.FC<NavbarProps> = ({ user }) => {
             {user ? (
               <div className="space-y-4">
                 <div className="flex items-center space-x-3 pb-4 border-b border-gray-200">
-                  <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-                    <User size={20} className="text-gray-600" />
+                  <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-300 border-2 border-gray-200">
+                    {(user as any).profileImage ? (
+                      <img
+                        src={(user as any).profileImage}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <User size={20} className="text-gray-600" />
+                      </div>
+                    )}
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">

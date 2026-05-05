@@ -35,8 +35,17 @@ export const signupSchema = yup.object().shape({
     .required('Please confirm your password'),
 });
 
+export const profileSchema = yup.object().shape({
+  name: yup
+    .string()
+    .min(2, 'Name must be at least 2 characters long')
+    .max(50, 'Name must be less than 50 characters')
+    .optional(),
+});
+
 export type LoginFormData = yup.InferType<typeof loginSchema>;
 export type SignupFormData = yup.InferType<typeof signupSchema>;
+export type ProfileFormData = yup.InferType<typeof profileSchema>;
 
 export async function validateForm(
   schema: yup.ObjectSchema<any>,

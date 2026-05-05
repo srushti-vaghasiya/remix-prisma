@@ -79,6 +79,7 @@ export async function requireUser(request: Request) {
       id: true,
       email: true,
       name: true,
+      profileImage: true,
       createdAt: true,
     },
   });
@@ -105,6 +106,7 @@ export async function getUser(request: Request) {
         id: true,
         email: true,
         name: true,
+        profileImage: true,
         createdAt: true,
       },
     });
@@ -113,4 +115,21 @@ export async function getUser(request: Request) {
   } catch {
     return null;
   }
+}
+
+export async function updateUserProfile(
+  userId: string,
+  data: { name?: string; profileImage?: string | null }
+) {
+  return prisma.user.update({
+    where: { id: userId },
+    data,
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      profileImage: true,
+      createdAt: true,
+    },
+  }) as any;
 }
