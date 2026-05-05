@@ -88,9 +88,11 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";
   let stack: string | undefined;
+  let statusCode: number | undefined;
 
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404" : "Error";
+    statusCode = error.status;
     details =
       error.status === 404
         ? "The requested page could not be found."
@@ -105,10 +107,39 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       <Navbar user={null} />
       <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h1 className="text-6xl font-bold text-gray-900 mb-4">{message}</h1>
-          <p className="text-xl text-gray-600 mb-8">{details}</p>
+          <div className="mx-auto w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+            <span className="text-3xl font-bold text-gray-400">
+              {statusCode === 404 ? "404" : "!"}
+            </span>
+          </div>
+
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            {message}
+          </h1>
+
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            {details}
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="/"
+              className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Go to Homepage
+            </a>
+
+            <a
+              href="/todos"
+              className="inline-flex items-center justify-center px-6 py-3 bg-white text-gray-700 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+            >
+              View Todo List
+            </a>
+          </div>
+
           {stack && (
-            <div className="text-left">
+            <div className="mt-8 text-left">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Error Details:</h3>
               <pre className="w-full p-4 bg-gray-100 rounded-lg overflow-x-auto text-sm">
                 <code>{stack}</code>
               </pre>
