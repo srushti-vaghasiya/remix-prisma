@@ -14,36 +14,36 @@ export default function Dashboard() {
   const { user } = useLoaderData<typeof loader>();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen">
+      <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         {/* Welcome Section */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Welcome back, {user.name || 'User'}!
+        <div className="mb-16 text-center animate-fade-in">
+          <h1 className="text-5xl font-bold text-gradient mb-6">
+            Welcome back, {user.name || 'User'}! 👋
           </h1>
-          <p className="text-lg text-gray-600">
-            This is your protected dashboard. Only authenticated users can see this page.
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Your personal workspace awaits. Manage tasks, track progress, and stay organized with our modern todo management system.
           </p>
         </div>
 
         {/* User Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          <Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <Card variant="glass" className="animate-scale-in">
             <CardHeader>
               <div className="flex items-center space-x-3">
-                <div className="p-3 bg-blue-100 rounded-lg">
-                  <User className="w-6 h-6 text-blue-600" />
+                <div className="p-3 bg-linear-to-br from-blue-500 to-indigo-500 rounded-xl shadow-lg">
+                  <User className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Profile</CardTitle>
-                  <CardDescription>Your account information</CardDescription>
+                  <CardDescription>Your account</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <div className="space-y-4">
               {/* Profile Image */}
               <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-200 border-2 border-gray-300">
+                <div className="w-16 h-16 rounded-full overflow-hidden bg-linear-to-br from-blue-500 to-indigo-500 border-3 border-white/50 shadow-lg">
                   {(user as any).profileImage ? (
                     <img
                       src={(user as any).profileImage}
@@ -52,12 +52,12 @@ export default function Dashboard() {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <User className="w-6 h-6 text-gray-400" />
+                      <User className="w-6 h-6 text-white" />
                     </div>
                   )}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">Profile Picture</p>
+                  <p className="text-sm font-semibold text-gray-900">Profile Picture</p>
                   <p className="text-xs text-gray-500">
                     {(user as any).profileImage ? 'Custom image set' : 'Default avatar'}
                   </p>
@@ -65,11 +65,15 @@ export default function Dashboard() {
               </div>
 
               {/* User Info */}
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-900">Name</p>
-                <p className="text-sm text-gray-600">{user.name || 'Not provided'}</p>
-                <p className="text-sm font-medium text-gray-900 mt-3">Email</p>
-                <p className="text-sm text-gray-600">{user.email}</p>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">Name</p>
+                  <p className="text-sm text-gray-600">{user.name || 'Not provided'}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">Email</p>
+                  <p className="text-sm text-gray-600">{user.email}</p>
+                </div>
               </div>
 
               {/* Edit Profile Button */}
@@ -87,65 +91,83 @@ export default function Dashboard() {
             </div>
           </Card>
 
-          <Card>
+          <Card variant="glass" className="animate-scale-in">
             <CardHeader>
               <div className="flex items-center space-x-3">
-                <div className="p-3 bg-purple-100 rounded-lg">
-                  <CheckSquare className="w-6 h-6 text-purple-600" />
+                <div className="p-3 bg-linear-to-br from-purple-500 to-pink-500 rounded-xl shadow-lg">
+                  <CheckSquare className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Todo Management</CardTitle>
-                  <CardDescription>Organize your tasks efficiently</CardDescription>
+                  <CardDescription>Organize tasks</CardDescription>
                 </div>
               </div>
             </CardHeader>
-            <div className="space-y-2">
-              <p className="text-sm text-gray-600">• Create and manage tasks</p>
-              <p className="text-sm text-gray-600">• Set priorities and due dates</p>
-              <p className="text-sm text-gray-600">• Track progress and completion</p>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse-slow"></div>
+                <span>Create and manage tasks</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse-slow" style={{ animationDelay: '0.5s' }}></div>
+                <span>Set priorities and due dates</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
+                <span>Track progress and completion</span>
+              </div>
             </div>
             <div className="pt-2">
               <Link to="/todos">
-                <Button variant="outline" size="sm" icon={<CheckSquare size={16} />}>
+                <Button variant="gradient" size="sm" icon={<CheckSquare size={16} />}>
                   Manage Tasks
                 </Button>
               </Link>
             </div>
           </Card>
 
-          <Card>
+          <Card variant="glass" className="animate-scale-in">
             <CardHeader>
               <div className="flex items-center space-x-3">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <Shield className="w-6 h-6 text-green-600" />
+                <div className="p-3 bg-linear-to-br from-green-500 to-emerald-500 rounded-xl shadow-lg">
+                  <Shield className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Security</CardTitle>
-                  <CardDescription>Your account is protected</CardDescription>
+                  <CardDescription>Protected</CardDescription>
                 </div>
               </div>
             </CardHeader>
-            <div className="space-y-2">
-              <p className="text-sm text-gray-600">• Secure password hashing</p>
-              <p className="text-sm text-gray-600">• Session-based authentication</p>
-              <p className="text-sm text-gray-600">• Protected routes</p>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>Secure password hashing</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>Session-based auth</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>Protected routes</span>
+              </div>
             </div>
           </Card>
 
-          <Card>
+          <Card variant="glass" className="animate-scale-in">
             <CardHeader>
               <div className="flex items-center space-x-3">
-                <div className="p-3 bg-purple-100 rounded-lg">
-                  <Calendar className="w-6 h-6 text-purple-600" />
+                <div className="p-3 bg-linear-to-br from-orange-500 to-red-500 rounded-xl shadow-lg">
+                  <Calendar className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Account Age</CardTitle>
-                  <CardDescription>When you joined us</CardDescription>
+                  <CardDescription>Member since</CardDescription>
                 </div>
               </div>
             </CardHeader>
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-900">Member Since</p>
+            <div className="space-y-3">
+              <p className="text-sm font-semibold text-gray-900">Member Since</p>
               <p className="text-sm text-gray-600">
                 {new Date(user.createdAt).toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -158,52 +180,52 @@ export default function Dashboard() {
         </div>
 
         {/* Features Section */}
-        <Card className="mb-12">
+        <Card variant="gradient" className="animate-scale-in">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Authentication Features</CardTitle>
-            <CardDescription>
-              This application demonstrates a complete authentication system
+            <CardTitle gradient className="text-3xl">Platform Features</CardTitle>
+            <CardDescription className="text-lg">
+              Everything you need for modern task management
             </CardDescription>
           </CardHeader>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900">Security Features</h3>
-              <ul className="space-y-2 text-sm text-gray-600">
-                <li className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <h3 className="text-xl font-semibold text-gradient">Security Features</h3>
+              <ul className="space-y-3 text-gray-600">
+                <li className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
                   <span>Password hashing with bcrypt</span>
                 </li>
-                <li className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <li className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow" style={{ animationDelay: '0.3s' }}></div>
                   <span>HTTP-only secure session cookies</span>
                 </li>
-                <li className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <li className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow" style={{ animationDelay: '0.6s' }}></div>
                   <span>Server-side form validation</span>
                 </li>
-                <li className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <li className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow" style={{ animationDelay: '0.9s' }}></div>
                   <span>Protected routes with middleware</span>
                 </li>
               </ul>
             </div>
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900">User Experience</h3>
-              <ul className="space-y-2 text-sm text-gray-600">
-                <li className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <h3 className="text-xl font-semibold text-gradient">User Experience</h3>
+              <ul className="space-y-3 text-gray-600">
+                <li className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse-slow"></div>
                   <span>Responsive modern UI design</span>
                 </li>
-                <li className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <li className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse-slow" style={{ animationDelay: '0.3s' }}></div>
                   <span>Real-time form validation</span>
                 </li>
-                <li className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <li className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse-slow" style={{ animationDelay: '0.6s' }}></div>
                   <span>Loading states and error handling</span>
                 </li>
-                <li className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <li className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse-slow" style={{ animationDelay: '0.9s' }}></div>
                   <span>Mobile-friendly navigation</span>
                 </li>
               </ul>

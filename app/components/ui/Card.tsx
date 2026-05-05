@@ -4,26 +4,36 @@ interface CardProps {
   children: React.ReactNode;
   className?: string;
   padding?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'glass' | 'gradient';
 }
 
 export const Card: React.FC<CardProps> = ({
   children,
   className = '',
-  padding = 'md'
+  padding = 'md',
+  variant = 'default'
 }) => {
   const paddingClasses = {
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8',
+    sm: 'p-5',
+    md: 'p-7',
+    lg: 'p-9',
+  };
+
+  const variants = {
+    default: 'bg-white/90 backdrop-blur-sm rounded-2xl shadow-elevated border border-white/20',
+    glass: 'glass rounded-2xl shadow-elevated',
+    gradient: 'bg-gradient-to-br from-white/80 to-white/60 backdrop-blur-md rounded-2xl shadow-elevated border border-white/30',
   };
 
   return (
     <div
       className={`
-        bg-white rounded-xl shadow-lg border border-gray-200
+        ${variants[variant]}
         ${paddingClasses[padding]}
         ${className}
+        card-hover
       `}
+      style={{ animationDelay: '0.1s' }}
     >
       {children}
     </div>
@@ -49,14 +59,16 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
 interface CardTitleProps {
   children: React.ReactNode;
   className?: string;
+  gradient?: boolean;
 }
 
 export const CardTitle: React.FC<CardTitleProps> = ({
   children,
-  className = ''
+  className = '',
+  gradient = false
 }) => {
   return (
-    <h2 className={`text-2xl font-bold text-gray-900 ${className}`}>
+    <h2 className={`text-3xl font-bold ${gradient ? 'text-gradient' : 'text-gray-900'} ${className}`}>
       {children}
     </h2>
   );
@@ -72,7 +84,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({
   className = ''
 }) => {
   return (
-    <p className={`text-gray-600 mt-2 ${className}`}>
+    <p className={`text-gray-600 mt-2 text-lg ${className}`}>
       {children}
     </p>
   );
