@@ -43,9 +43,29 @@ export const profileSchema = yup.object().shape({
     .optional(),
 });
 
+export const taskSchema = yup.object().shape({
+  title: yup
+    .string()
+    .min(1, 'Title is required')
+    .max(200, 'Title must be less than 200 characters')
+    .required('Title is required'),
+  description: yup
+    .string()
+    .max(1000, 'Description must be less than 1000 characters')
+    .optional(),
+  priority: yup
+    .string()
+    .oneOf(['LOW', 'MEDIUM', 'HIGH', 'URGENT'], 'Invalid priority')
+    .default('MEDIUM'),
+  completed: yup
+    .boolean()
+    .default(false),
+});
+
 export type LoginFormData = yup.InferType<typeof loginSchema>;
 export type SignupFormData = yup.InferType<typeof signupSchema>;
 export type ProfileFormData = yup.InferType<typeof profileSchema>;
+export type TaskFormData = yup.InferType<typeof taskSchema>;
 
 export async function validateForm(
   schema: yup.ObjectSchema<any>,

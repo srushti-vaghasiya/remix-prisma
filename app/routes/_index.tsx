@@ -1,5 +1,5 @@
 import { useLoaderData, Link } from 'react-router';
-import { User, Shield, Calendar } from 'lucide-react';
+import { User, Shield, Calendar, CheckSquare } from 'lucide-react';
 import { requireUser } from '~/utils/auth.server';
 import { Button } from '~/components/ui/Button';
 import { Card, CardHeader, CardTitle, CardDescription } from '~/components/ui/Card';
@@ -90,6 +90,32 @@ export default function Dashboard() {
           <Card>
             <CardHeader>
               <div className="flex items-center space-x-3">
+                <div className="p-3 bg-purple-100 rounded-lg">
+                  <CheckSquare className="w-6 h-6 text-purple-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Todo Management</CardTitle>
+                  <CardDescription>Organize your tasks efficiently</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <div className="space-y-2">
+              <p className="text-sm text-gray-600">• Create and manage tasks</p>
+              <p className="text-sm text-gray-600">• Set priorities and due dates</p>
+              <p className="text-sm text-gray-600">• Track progress and completion</p>
+            </div>
+            <div className="pt-2">
+              <Link to="/todos">
+                <Button variant="outline" size="sm" icon={<CheckSquare size={16} />}>
+                  Manage Tasks
+                </Button>
+              </Link>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <div className="flex items-center space-x-3">
                 <div className="p-3 bg-green-100 rounded-lg">
                   <Shield className="w-6 h-6 text-green-600" />
                 </div>
@@ -100,15 +126,9 @@ export default function Dashboard() {
               </div>
             </CardHeader>
             <div className="space-y-2">
-              <p className="text-sm text-gray-600">
-                ✓ Password encrypted with bcrypt
-              </p>
-              <p className="text-sm text-gray-600">
-                ✓ HTTP-only session cookies
-              </p>
-              <p className="text-sm text-gray-600">
-                ✓ Secure authentication flow
-              </p>
+              <p className="text-sm text-gray-600">• Secure password hashing</p>
+              <p className="text-sm text-gray-600">• Session-based authentication</p>
+              <p className="text-sm text-gray-600">• Protected routes</p>
             </div>
           </Card>
 
