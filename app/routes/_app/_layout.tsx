@@ -11,10 +11,10 @@ const authMiddleware: Route.MiddlewareFunction = async ({ request, context }: { 
 
 export const middleware = [authMiddleware];
 
-export async function loader({ request }: LoaderFunctionArgs) {
-    const user = await requireUser(request);
-    return { user };
-}
+// export async function loader({ request }: LoaderFunctionArgs) {
+//         const user = await requireUser(request);
+//         return { user };
+// }
 
 export default function AppLayout() {
     return (
