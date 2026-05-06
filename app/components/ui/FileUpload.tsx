@@ -3,7 +3,7 @@ import { Camera, Upload, X } from 'lucide-react';
 
 interface FileUploadProps {
   currentImage?: string;
-  onRemove?: () => void;
+  onRemove: () => void;
   className?: string;
   name?: string; // Add name prop for form field
 }
@@ -74,7 +74,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-    onRemove?.();
+    onRemove();
   };
 
   return (
