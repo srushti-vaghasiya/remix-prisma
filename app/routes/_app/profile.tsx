@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, useActionData, useLoaderData, redirect, useNavigation, Link } from 'react-router';
+import { Form, useActionData, useLoaderData, redirect, useNavigation, Link, useFetcher } from 'react-router';
 import { ArrowLeft, User, Mail, Save } from 'lucide-react';
 import { updateUserProfile } from '~/utils/auth.server';
 import { validateForm, profileSchema } from '~/utils/validator';
@@ -10,6 +10,7 @@ import { FileUpload } from '~/components/ui/FileUpload';
 import type { ActionFunctionArgs, LoaderFunctionArgs } from 'react-router';
 import toast from 'react-hot-toast';
 import { userContext } from "~/context";
+import { uploadProfileImage, deleteProfileImage } from '~/utils/cloudinary.server';
 
 export async function loader({ context }: LoaderFunctionArgs) {
   const user = context.get(userContext);
@@ -22,6 +23,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   const name = formData.get('name') as string;
   const profileImageFile = formData.get('profileImage') as File | null;
+  const deleteProfileImageFlag = formData.get('deleteProfileImage') === 'true';
 
   try {
     // Validate name
@@ -36,8 +38,13 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
     // Handle profile image upload
     let profileImageUrl = (user as any).profileImage;
-    if (profileImageFile && profileImageFile.size > 0) {
-      const { uploadProfileImage } = await import('~/utils/cloudinary.server');
+
+    if (deleteProfileImageFlag) {
+      // Delete existing profile image
+      await deleteProfileImage(user.id);
+      profileImageUrl = null;
+    } else if (profileImageFile && profileImageFile.size > 0) {
+      // Upload new profile image
       profileImageUrl = await uploadProfileImage(profileImageFile, user.id);
     }
 
@@ -65,6 +72,15 @@ export default function Profile() {
   const errors = actionData?.errors;
   const values = actionData?.values;
   const isSubmitting = navigation.state === 'submitting';
+  const deleteFetcher = useFetcher();
+
+  // Handle profile image deletion
+  const handleDeleteProfileImage = () => {
+    deleteFetcher.submit(
+      { deleteProfileImage: 'true', name: user.name },
+      { method: 'post' }
+    );
+  };
 
   // Show success message when profile is updated
   React.useEffect(() => {
@@ -125,6 +141,7 @@ export default function Profile() {
                 currentImage={(user as any).profileImage}
                 className="mx-auto"
                 name="profileImage"
+                onRemove={handleDeleteProfileImage}
               />
             </div>
 
