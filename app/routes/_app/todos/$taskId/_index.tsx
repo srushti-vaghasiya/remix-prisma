@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLoaderData, Link } from 'react-router';
+import { useLoaderData, Link, useFetcher } from 'react-router';
 import { ArrowLeft, Edit, Trash2, Calendar, AlertTriangle, CheckCircle, Circle } from 'lucide-react';
 import { getTaskById } from '~/utils/tasks.server';
 import { Button } from '~/components/ui/Button';
@@ -42,6 +42,8 @@ const priorityIcons = {
 export default function TaskDetailPage() {
   const { task } = useLoaderData<typeof loader>();
   const PriorityIcon = priorityIcons[task.priority];
+  const toggleFetcher = useFetcher();
+  const deleteFetcher = useFetcher();
   const [deleteDialog, setDeleteDialog] = React.useState<{
     isOpen: boolean;
     taskId: string | null;
@@ -51,15 +53,6 @@ export default function TaskDetailPage() {
     taskId: null,
     taskTitle: '',
   });
-  const handleDeleteConfirm = () => {
-    if (deleteDialog.taskId) {
-      const form = document.createElement('form');
-      form.method = 'post';
-      form.action = `/todos/${deleteDialog.taskId}/delete`;
-      document.body.appendChild(form);
-      form.submit();
-    }
-  };
 
   const handleDeleteCancel = () => {
     setDeleteDialog({
@@ -67,6 +60,19 @@ export default function TaskDetailPage() {
       taskId: null,
       taskTitle: '',
     });
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteDialog.taskId) {
+      deleteFetcher.submit(
+        {},
+        {
+          method: 'post',
+          action: `/todos/${deleteDialog.taskId}/delete`
+        }
+      );
+      handleDeleteCancel()
+    }
   };
 
 
@@ -101,22 +107,19 @@ export default function TaskDetailPage() {
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-start space-x-4 flex-1">
                     {/* Status Icon */}
-                    <button
-                      className="mt-1 shrink-0"
-                      onClick={() => {
-                        const form = document.createElement('form');
-                        form.method = 'post';
-                        form.action = `/todos/${task.id}/toggle`;
-                        document.body.appendChild(form);
-                        form.submit();
-                      }}
-                    >
-                      {task.completed ? (
-                        <CheckCircle className="w-8 h-8 text-green-600 hover:text-green-700" />
-                      ) : (
-                        <Circle className="w-8 h-8 text-gray-400 hover:text-gray-600" />
-                      )}
-                    </button>
+                    <toggleFetcher.Form method="post" action={`/todos/${task.id}/toggle`}>
+                      <button
+                        type="submit"
+                        className="mt-1 shrink-0"
+                        disabled={toggleFetcher.state === 'submitting'}
+                      >
+                        {task.completed ? (
+                          <CheckCircle className="w-8 h-8 text-green-600 hover:text-green-700" />
+                        ) : (
+                          <Circle className="w-8 h-8 text-gray-400 hover:text-gray-600" />
+                        )}
+                      </button>
+                    </toggleFetcher.Form>
 
                     {/* Task Title and Priority */}
                     <div className="flex-1 min-w-0">

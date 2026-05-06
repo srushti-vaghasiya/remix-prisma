@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLoaderData, Link, useSearchParams } from 'react-router';
+import { useLoaderData, Link, useSearchParams, useFetcher } from 'react-router';
 import {
   Plus,
   Search,
@@ -77,6 +77,8 @@ export default function TodosPage() {
     taskId: null,
     taskTitle: '',
   });
+  const toggleFetcher = useFetcher();
+  const deleteFetcher = useFetcher();
 
   const handleFilterChange = (key: string, value: string | null) => {
     if (value) {
@@ -102,12 +104,15 @@ export default function TodosPage() {
 
   const handleDeleteConfirm = () => {
     if (deleteDialog.taskId) {
-      const form = document.createElement('form');
-      form.method = 'post';
-      form.action = `/todos/${deleteDialog.taskId}/delete`;
-      document.body.appendChild(form);
-      form.submit();
+      deleteFetcher.submit(
+        {},
+        {
+          method: 'post',
+          action: `/todos/${deleteDialog.taskId}/delete`
+        }
+      );
     }
+    handleDeleteCancel()
   };
 
   const handleDeleteCancel = () => {
@@ -171,7 +176,7 @@ export default function TodosPage() {
             <div className="space-y-4">
               <div className="flex flex-col lg:flex-row gap-4">
                 {/* Search */}
-                <div className="flex-1">
+                {/* <div className="flex-1">
                   <Input
                     placeholder="Search tasks..."
                     icon={<Search size={20} />}
@@ -179,7 +184,7 @@ export default function TodosPage() {
                     onChange={(e) => handleFilterChange('search', e.target.value)}
                     className="w-full"
                   />
-                </div>
+                </div> */}
 
                 {/* Priority Filter */}
                 <select
@@ -217,8 +222,6 @@ export default function TodosPage() {
                 >
                   <option value="createdAt-desc">Newest First</option>
                   <option value="createdAt-asc">Oldest First</option>
-                  <option value="priority-desc">Priority (High to Low)</option>
-                  <option value="priority-asc">Priority (Low to High)</option>
                   <option value="title-asc">Title (A-Z)</option>
                   <option value="title-desc">Title (Z-A)</option>
                 </select>
@@ -257,22 +260,19 @@ export default function TodosPage() {
                       <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-4 flex-1">
                           {/* Status Icon */}
-                          <button
-                            className="mt-1 shrink-0"
-                            onClick={() => {
-                              const form = document.createElement('form');
-                              form.method = 'post';
-                              form.action = `/todos/${task.id}/toggle`;
-                              document.body.appendChild(form);
-                              form.submit();
-                            }}
-                          >
-                            {task.completed ? (
-                              <CheckCircle className="w-6 h-6 text-green-600 hover:text-green-700" />
-                            ) : (
-                              <Circle className="w-6 h-6 text-gray-400 hover:text-gray-600" />
-                            )}
-                          </button>
+                          <toggleFetcher.Form method="post" action={`/todos/${task.id}/toggle`}>
+                            <button
+                              type="submit"
+                              className="mt-1 shrink-0"
+                              disabled={toggleFetcher.state === 'submitting'}
+                            >
+                              {task.completed ? (
+                                <CheckCircle className="w-6 h-6 text-green-600 hover:text-green-700" />
+                              ) : (
+                                <Circle className="w-6 h-6 text-gray-400 hover:text-gray-600" />
+                              )}
+                            </button>
+                          </toggleFetcher.Form>
 
                           {/* Task Content */}
                           <div className="flex-1 min-w-0">

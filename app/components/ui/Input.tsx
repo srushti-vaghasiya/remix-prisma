@@ -50,7 +50,7 @@ export const Input: React.FC<InputProps> = ({
               ? 'border-red-400 focus:ring-red-400 focus:border-red-400 bg-red-50/50'
               : isFocused
                 ? 'border-blue-400 focus:ring-blue-400 focus:border-blue-400 shadow-glow'
-                : 'border-gray-200 hover:border-gray-300 focus:ring-blue-400 focus:border-blue-400'
+                : 'border-gray-300! hover:border-gray-300 focus:ring-blue-400 focus:border-blue-400'
             }
             focus:outline-none focus:ring-2 focus:ring-opacity-20
             placeholder-gray-400
