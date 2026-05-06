@@ -1,15 +1,15 @@
 import React from 'react';
 import { useLoaderData, Link } from 'react-router';
 import { ArrowLeft, Edit, Trash2, Calendar, AlertTriangle, CheckCircle, Circle } from 'lucide-react';
-import { requireUser } from '~/utils/auth.server';
 import { getTaskById } from '~/utils/tasks.server';
 import { Button } from '~/components/ui/Button';
 import { Card, CardHeader, CardTitle, CardDescription } from '~/components/ui/Card';
 import type { LoaderFunctionArgs } from 'react-router';
 import { ConfirmDialog } from '~/components/ui/ConfirmDialog';
+import { userContext } from "~/context";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
-  const user = await requireUser(request);
+export async function loader({ request, params, context }: LoaderFunctionArgs) {
+  const user = context.get(userContext)
   const taskId = params.taskId;
 
   if (!taskId) {

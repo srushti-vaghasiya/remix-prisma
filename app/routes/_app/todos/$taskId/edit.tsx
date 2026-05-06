@@ -1,15 +1,15 @@
 import React from 'react';
 import { redirect, useLoaderData } from 'react-router';
 import { Edit, Save } from 'lucide-react';
-import { requireUser } from '~/utils/auth.server';
 import { getTaskById, updateTask } from '~/utils/tasks.server';
 import { validateForm, taskSchema } from '~/utils/validator';
 import { TaskForm } from '~/components/TaskForm';
 import type { ActionFunctionArgs, LoaderFunctionArgs } from 'react-router';
 import toast from 'react-hot-toast';
+import { userContext } from "~/context";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
-  const user = await requireUser(request);
+export async function loader({ request, params, context }: LoaderFunctionArgs) {
+  const user = context.get(userContext)
   const taskId = params.taskId;
 
   if (!taskId) {
@@ -25,8 +25,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   return { task };
 }
 
-export async function action({ request, params }: ActionFunctionArgs) {
-  const user = await requireUser(request);
+export async function action({ request, params, context }: ActionFunctionArgs) {
+  const user = context.get(userContext)
   const taskId = params.taskId;
 
   if (!taskId) {

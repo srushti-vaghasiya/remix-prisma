@@ -1,15 +1,15 @@
 import React from 'react';
 import { redirect } from 'react-router';
 import { Plus } from 'lucide-react';
-import { requireUser } from '~/utils/auth.server';
 import { createTask } from '~/utils/tasks.server';
 import { validateForm, taskSchema } from '~/utils/validator';
 import { TaskForm } from '~/components/TaskForm';
 import type { ActionFunctionArgs } from 'react-router';
 import toast from 'react-hot-toast';
+import { userContext } from "~/context";
 
-export async function action({ request }: ActionFunctionArgs) {
-  const user = await requireUser(request);
+export async function action({ request, context }: ActionFunctionArgs) {
+  const user = context.get(userContext)
   const formData = await request.formData();
 
   const data = {

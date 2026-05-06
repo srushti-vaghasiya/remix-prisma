@@ -1,10 +1,10 @@
 import { redirect } from 'react-router';
-import { requireUser } from '~/utils/auth.server';
 import { getTaskById, updateTask } from '~/utils/tasks.server';
 import type { ActionFunctionArgs } from 'react-router';
+import { userContext } from "~/context";
 
-export async function action({ request, params }: ActionFunctionArgs) {
-  const user = await requireUser(request);
+export async function action({ request, params, context }: ActionFunctionArgs) {
+  const user = context.get(userContext)
   const taskId = params.taskId;
 
   if (!taskId) {

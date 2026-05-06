@@ -14,16 +14,16 @@ import {
   Edit,
   Trash2
 } from 'lucide-react';
-import { requireUser } from '~/utils/auth.server';
 import { getTasksForUser, getTaskStats, type TaskFilters } from '~/utils/tasks.server';
 import { Button } from '~/components/ui/Button';
 import { Card, CardHeader, CardTitle, CardDescription } from '~/components/ui/Card';
 import { Input } from '~/components/ui/Input';
 import { ConfirmDialog } from '~/components/ui/ConfirmDialog';
 import type { LoaderFunctionArgs } from 'react-router';
+import { userContext } from "~/context";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await requireUser(request);
+export async function loader({ request, context }: LoaderFunctionArgs) {
+  const user = context.get(userContext)
   const url = new URL(request.url);
 
   // Parse search params

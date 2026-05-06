@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, useActionData, useLoaderData, redirect, useNavigation, Link } from 'react-router';
 import { ArrowLeft, User, Mail, Save } from 'lucide-react';
-import { requireUser, updateUserProfile } from '~/utils/auth.server';
+import { updateUserProfile } from '~/utils/auth.server';
 import { validateForm, profileSchema } from '~/utils/validator';
 import { Input } from '~/components/ui/Input';
 import { Button } from '~/components/ui/Button';
@@ -9,14 +9,15 @@ import { Card, CardHeader, CardTitle, CardDescription } from '~/components/ui/Ca
 import { FileUpload } from '~/components/ui/FileUpload';
 import type { ActionFunctionArgs, LoaderFunctionArgs } from 'react-router';
 import toast from 'react-hot-toast';
+import { userContext } from "~/context";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await requireUser(request);
+export async function loader({ context }: LoaderFunctionArgs) {
+  const user = context.get(userContext);
   return { user };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
-  const user = await requireUser(request);
+export async function action({ request, context }: ActionFunctionArgs) {
+  const user = context.get(userContext);
   const formData = await request.formData();
 
   const name = formData.get('name') as string;
