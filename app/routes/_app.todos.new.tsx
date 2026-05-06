@@ -5,13 +5,8 @@ import { requireUser } from '~/utils/auth.server';
 import { createTask } from '~/utils/tasks.server';
 import { validateForm, taskSchema } from '~/utils/validator';
 import { TaskForm } from '~/components/TaskForm';
-import type { ActionFunctionArgs, LoaderFunctionArgs } from 'react-router';
+import type { ActionFunctionArgs } from 'react-router';
 import toast from 'react-hot-toast';
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await requireUser(request);
-  return { user };
-}
 
 export async function action({ request }: ActionFunctionArgs) {
   const user = await requireUser(request);

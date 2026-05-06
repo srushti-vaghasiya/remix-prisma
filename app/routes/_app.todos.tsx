@@ -44,7 +44,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   ]);
 
   return {
-    user,
     tasks: tasksData,
     stats,
     filters,
@@ -67,7 +66,7 @@ const priorityIcons = {
 };
 
 export default function TodosPage() {
-  const { user, tasks, stats, filters, pagination } = useLoaderData<typeof loader>();
+  const { tasks, stats, filters, pagination } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [deleteDialog, setDeleteDialog] = React.useState<{
     isOpen: boolean;

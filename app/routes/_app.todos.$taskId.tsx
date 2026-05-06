@@ -22,7 +22,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     throw new Response('Task not found', { status: 404 });
   }
 
-  return { user, task };
+  return { task };
 }
 
 const priorityColors = {
@@ -40,7 +40,7 @@ const priorityIcons = {
 };
 
 export default function TaskDetailPage() {
-  const { user, task } = useLoaderData<typeof loader>();
+  const { task } = useLoaderData<typeof loader>();
   const PriorityIcon = priorityIcons[task.priority];
   const [deleteDialog, setDeleteDialog] = React.useState<{
     isOpen: boolean;

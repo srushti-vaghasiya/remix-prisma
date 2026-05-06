@@ -35,7 +35,7 @@ export const Input: React.FC<InputProps> = ({
       )}
       <div className="relative group">
         {icon && (
-          <div className={`absolute left-4 top-1/2 transform -translate-y-1/2 transition-colors ${isFocused ? 'text-blue-600' : 'text-gray-400'
+          <div className={`absolute left-4 top-1/2 z-50 transform -translate-y-1/2 transition-colors ${isFocused ? 'text-blue-600' : 'text-gray-400'
             }`}>
             {icon}
           </div>
