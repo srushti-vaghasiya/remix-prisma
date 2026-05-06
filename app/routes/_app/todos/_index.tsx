@@ -68,6 +68,7 @@ const priorityIcons = {
 export default function TodosPage() {
   const { tasks, stats, filters, pagination } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [localSearch, setLocalSearch] = React.useState(filters.search || '');
   const [deleteDialog, setDeleteDialog] = React.useState<{
     isOpen: boolean;
     taskId: string | null;
@@ -79,6 +80,20 @@ export default function TodosPage() {
   });
   const toggleFetcher = useFetcher();
   const deleteFetcher = useFetcher();
+
+  // Debounce hook for search
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      handleFilterChange('search', localSearch.trim() || null);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [localSearch]);
+
+  // Sync local search with URL params when they change
+  React.useEffect(() => {
+    setLocalSearch(filters.search || '');
+  }, [filters.search]);
 
   const handleFilterChange = (key: string, value: string | null) => {
     if (value) {
@@ -176,15 +191,15 @@ export default function TodosPage() {
             <div className="space-y-4">
               <div className="flex flex-col lg:flex-row gap-4">
                 {/* Search */}
-                {/* <div className="flex-1">
+                <div className="flex-1">
                   <Input
                     placeholder="Search tasks..."
                     icon={<Search size={20} />}
-                    value={filters.search || ''}
-                    onChange={(e) => handleFilterChange('search', e.target.value)}
+                    value={localSearch}
+                    onChange={(e) => setLocalSearch(e.target.value)}
                     className="w-full"
                   />
-                </div> */}
+                </div>
 
                 {/* Priority Filter */}
                 <select
