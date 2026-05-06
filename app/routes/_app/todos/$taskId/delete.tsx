@@ -14,5 +14,5 @@ export async function action({ request, params }: ActionFunctionArgs) {
   // Delete task
   await deleteTask(taskId, user.id);
 
-  return redirect('/todos?message=Task deleted successfully');
+  return redirect('/todos');
 }
